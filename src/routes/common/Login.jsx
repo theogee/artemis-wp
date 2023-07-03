@@ -7,7 +7,7 @@ export async function action({ request }) {
         const formData = await request.formData();
         const payload = Object.fromEntries(formData);
 
-        const endpoint = "/api/adm/login";
+        const endpoint = "/api/login";
         const response = await fetch(endpoint, {
             method: "post",
             headers: {
