@@ -7,6 +7,7 @@ import Upload from "./routes/admin/Upload";
 import Dashboard, {
     loader as dashboardLoader,
 } from "./routes/common/Dashboard";
+import ErrorPage from "./routes/common/ErrorPage";
 import Login, { action as loginAction } from "./routes/common/Login";
 
 const router = createBrowserRouter([
@@ -15,11 +16,13 @@ const router = createBrowserRouter([
         element: (
             <div className="font-sans">Hello from Artemis Web Platform!</div>
         ),
+        errorElement: <ErrorPage />,
     },
     {
         path: "/login",
         element: <Login />,
         action: loginAction,
+        errorElement: <ErrorPage />,
     },
     {
         // call GetMeta for every routes to pre check if user is authorized to access a specific page
@@ -27,6 +30,7 @@ const router = createBrowserRouter([
         path: "/dashboard",
         element: <Dashboard />,
         loader: dashboardLoader,
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: "discover",
