@@ -1,8 +1,12 @@
-import { useRouteError } from "react-router-dom";
+import { redirect, useRouteError } from "react-router-dom";
 
 export default function ErrorPage() {
     const error = useRouteError();
     console.log(error);
+
+    if (error.message == 401) {
+        return redirect("/login");
+    }
 
     return (
         <div id="error-page">
