@@ -2,7 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import Discover, { loader as discoverLoader } from "./routes/admin/Discover";
+import Discover, {
+    action as discoverAction,
+    loader as discoverLoader,
+} from "./routes/admin/Discover";
 import Upload from "./routes/admin/Upload";
 import Dashboard, {
     loader as dashboardLoader,
@@ -36,6 +39,7 @@ const router = createBrowserRouter([
                 path: "discover",
                 element: <Discover />,
                 loader: discoverLoader,
+                action: discoverAction,
             },
             {
                 path: "upload",

@@ -1,6 +1,14 @@
-import { useEffect, useState } from "react";
-import { Form, redirect, useLoaderData } from "react-router-dom";
-import { CloseIcon, PlusIcon, SearchIcon } from "../common/misc/SVG";
+import { useEffect, useRef, useState } from "react";
+import {
+    Form,
+    redirect,
+    useActionData,
+    useLoaderData,
+    useOutletContext,
+    useSubmit,
+} from "react-router-dom";
+import { ArrowIcon, CloseIcon, PlusIcon, SearchIcon } from "../common/misc/SVG";
+import StudentTable from "./StudentTable";
 
 async function filterWidgetLoader() {
     const SGUMajorEndpoint = "/api/sgu_majors";
@@ -81,7 +89,7 @@ function FilterWidget({
         <div
             className={
                 parentClass +
-                " w-[500px] rounded-lg bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-5 flex flex-wrap gap-y-6"
+                " w-[500px] rounded-lg bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-5 flex flex-wrap gap-y-6 z-10"
             }
         >
             <div className="basis-2/5">
@@ -164,7 +172,8 @@ function FilterWidget({
             <div className="basis-7/12 text-left self-center">
                 <button
                     className="text-slate-400 hover:text-yellow-500 font-semibold text-xs transition-colors ease-linear"
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.preventDefault();
                         setFilter({
                             Year: "",
                             MajorID: "",
@@ -179,7 +188,10 @@ function FilterWidget({
             <div className="basis-2/12 text-right self-center">
                 <button
                     className="text-slate-400 hover:text-black font-semibold text-xs transition-colors ease-linear"
-                    onClick={onCancel}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        onCancel();
+                    }}
                 >
                     Cancel
                 </button>
@@ -187,7 +199,8 @@ function FilterWidget({
             <div className="basis-3/12 text-right">
                 <button
                     className="text-white font-semibold text-xs transition-colors ease-linear p-2 bg-black rounded-md"
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.preventDefault();
                         const updatedFilter = { ...filter };
                         Object.keys(filter).forEach((kf) => {
                             if (filter[kf] === "") {
@@ -204,9 +217,44 @@ function FilterWidget({
     );
 }
 
+export async function action({ request }) {
+    const formData = await request.formData();
+    const q = {
+        limit: 20,
+    };
+
+    if (formData.get("studentName") !== "")
+        q["name"] = formData.get("studentName");
+    if (formData.get("filterByYear") !== "")
+        q["exchangeYear"] = formData.get("filterByYear");
+    if (formData.get("filterByMatrikulnummer") !== "")
+        q["studentID"] = formData.get("filterByMatrikulnummer");
+    if (formData.get("filterByMajor") !== "")
+        q["SGUMajorID"] = formData.get("filterByMajor");
+    if (formData.get("page") !== "") q["page"] = formData.get("page");
+
+    const endpoint = "/api/students?" + new URLSearchParams(q);
+
+    const response = await fetch(endpoint, {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (response.status === 401) throw new Error(401);
+
+    const data = await response.json();
+
+    return data.data;
+}
+
 export default function Discover() {
+    const { className } = useOutletContext();
     const [isFilterWidgetOpen, setIsFilterWidgetOpen] = useState(false);
     const [discoverFilter, setDiscoverFilter] = useState({});
+    const formRef = useRef(null);
+    const submit = useSubmit();
+    const data = useActionData();
+    const [currentPage, setCurrentPage] = useState(1);
     /**
      * this filter state is used because we don't want the specific filter identifier [Year: 2023 x] to show up when we choose an option from the drop down
      * only after the user clicks "Apply filter", then we want to show it
@@ -237,12 +285,14 @@ export default function Discover() {
         setDiscoverFilter({});
     };
 
-    const handleSearch = () => {};
+    useEffect(() => {
+        submit(formRef.current);
+    }, [currentPage]);
 
     return (
-        <div className="relative p-16">
+        <div className={className + " relative p-16"}>
             <h1 className="font-extrabold text-2xl mb-7">Student List</h1>
-            <Form className="flex gap-5 mb-3">
+            <Form className="flex gap-5 mb-3" method="post" ref={formRef}>
                 <input
                     className="lock py-2 px-3 font-medium text-xs text-gray-600 rounded-md w-96 border-2 border-slate-200"
                     type="text"
@@ -252,7 +302,7 @@ export default function Discover() {
                 />
                 <div
                     className="bg-black flex px-3 justify-around items-center w-24 rounded-md hover:cursor-pointer"
-                    onClick={handleSearch}
+                    onClick={() => submit(formRef.current)}
                 >
                     <SearchIcon
                         w={14}
@@ -274,21 +324,22 @@ export default function Discover() {
                     />
                     <p className="text-white text-xs font-semibold">Filter</p>
                 </div>
+                <FilterWidget
+                    className={
+                        (isFilterWidgetOpen ? "absolute" : "hidden") + " top-44"
+                    }
+                    onCancel={handleAddFilter}
+                    setDiscoverFilterState={(newFilter) => {
+                        setIsFilterWidgetOpen(!isFilterWidgetOpen);
+                        setDiscoverFilter(newFilter);
+                    }}
+                    handleClearFilter={handleClearFilter}
+                    filter={filterWidget}
+                    setFilter={setFilterWidget}
+                />
+                <input type="hidden" name="page" value={currentPage} />
             </Form>
-            <FilterWidget
-                className={
-                    (isFilterWidgetOpen ? "absolute" : "hidden") + " top-44"
-                }
-                onCancel={handleAddFilter}
-                setDiscoverFilterState={(newFilter) => {
-                    setIsFilterWidgetOpen(!isFilterWidgetOpen);
-                    setDiscoverFilter(newFilter);
-                }}
-                handleClearFilter={handleClearFilter}
-                filter={filterWidget}
-                setFilter={setFilterWidget}
-            />
-            <div className="flex gap-3">
+            <div className="flex gap-3 mb-5">
                 {Object.keys(discoverFilter).map((kf, i) => {
                     if (kf === "MajorID" || discoverFilter[kf] === "") return;
                     return (
@@ -318,6 +369,11 @@ export default function Discover() {
                     );
                 })}
             </div>
+            <StudentTable
+                data={data}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+            />
         </div>
     );
 }

@@ -61,3 +61,19 @@ export const PlusIcon = ({ w, h, className: parentClass, onClick }) => {
         </button>
     );
 };
+
+export const ArrowIcon = ({ w, h, className: parentClass, onClick }) => {
+    return (
+        <button onClick={onClick}>
+            <svg
+                width={w}
+                height={h}
+                viewBox="0 0 6 10"
+                xmlns="http://www.w3.org/2000/svg"
+                className={parentClass}
+            >
+                <path d="M4.13526 9.16667C3.91692 9.16667 3.69942 9.08167 3.53609 8.9125L0.316924 5.57917C0.0019236 5.25167 0.00609026 4.73251 0.327757 4.41084L3.66109 1.0775C3.98609 0.751672 4.51359 0.751672 4.83942 1.0775C5.16442 1.40334 5.16442 1.93 4.83942 2.25584L2.08526 5.01001L4.73442 7.75417C5.05442 8.08584 5.04526 8.61334 4.71442 8.93251C4.55192 9.08917 4.34359 9.16667 4.13526 9.16667" />
+            </svg>
+        </button>
+    );
+};

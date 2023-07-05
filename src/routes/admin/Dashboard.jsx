@@ -1,4 +1,5 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { NavLink, Outlet, useActionData } from "react-router-dom";
 import { SearchIcon, UploadIcon } from "../common/misc/SVG";
 
 function Navigation({ className: parentClass }) {
@@ -64,8 +65,8 @@ function Navigation({ className: parentClass }) {
 export default function Dashboard() {
     return (
         <div className="flex h-screen">
-            <Navigation className="w-1/5 flex flex-col items-center justify-center gap-10" />
-            <Outlet />
+            <Navigation className="w-1/12 flex flex-col items-center justify-center gap-10" />
+            <Outlet context={{ className: "w-11/12" }} />
         </div>
     );
 }
