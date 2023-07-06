@@ -16,9 +16,9 @@ export default function Alert({
             : "text-white";
     return (
         <div
-            className={`${color} ${parentClass} py-4 px-4 block text-xs rounded-lg bg-black font-medium flex items-center`}
+            className={`${color} ${parentClass} py-4 px-4 text-xs rounded-lg bg-black font-medium flex items-center min-w-[300px] justify-between`}
         >
-            <p className={`${color} mr-5`}>{message}</p>
+            <p className={`${color}`}>{message}</p>
             <CloseIcon
                 w="22"
                 h="22"

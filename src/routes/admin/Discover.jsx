@@ -198,7 +198,7 @@ function FilterWidget({
             </div>
             <div className="basis-3/12 text-right">
                 <button
-                    className="text-white font-semibold text-xs transition-colors ease-linear p-2 bg-black rounded-md"
+                    className="text-white font-semibold text-xs transition-colors ease-linear p-2 bg-black rounded-md hover:text-green-300"
                     onClick={(e) => {
                         e.preventDefault();
                         const updatedFilter = { ...filter };
@@ -294,14 +294,14 @@ export default function Discover() {
             <h1 className="font-extrabold text-2xl mb-7">Student List</h1>
             <Form className="flex gap-5 mb-3" method="post" ref={formRef}>
                 <input
-                    className="lock py-2 px-3 font-medium text-xs text-gray-600 rounded-md w-96 border-2 border-slate-200"
+                    className="py-2 px-3 font-medium text-xs text-gray-600 rounded-md w-96 border-2 border-slate-200"
                     type="text"
                     id="name"
                     placeholder="Search by name"
                     name="studentName"
                 />
                 <div
-                    className="bg-black flex px-3 justify-around items-center w-24 rounded-md hover:cursor-pointer"
+                    className="bg-black flex px-3 justify-around items-center w-24 rounded-md hover:cursor-pointer [&_svg]:hover:fill-green-300 [&>p]:hover:text-green-300"
                     onClick={() => submit(formRef.current)}
                 >
                     <SearchIcon
@@ -313,7 +313,7 @@ export default function Discover() {
                     <p className="text-white text-xs font-semibold">Search</p>
                 </div>
                 <div
-                    className="bg-black flex px-3 justify-around items-center w-20 rounded-md hover:cursor-pointer"
+                    className="bg-black flex px-3 justify-around items-center w-20 rounded-md hover:cursor-pointer [&_svg]:hover:fill-green-300 [&>p]:hover:text-green-300"
                     onClick={handleAddFilter}
                 >
                     <PlusIcon
