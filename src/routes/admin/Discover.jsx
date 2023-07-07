@@ -4,10 +4,17 @@ import {
     redirect,
     useActionData,
     useLoaderData,
+    useNavigation,
     useOutletContext,
     useSubmit,
 } from "react-router-dom";
-import { ArrowIcon, CloseIcon, PlusIcon, SearchIcon } from "../common/misc/SVG";
+import {
+    ArrowIcon,
+    CloseIcon,
+    LoadingIcon,
+    PlusIcon,
+    SearchIcon,
+} from "../common/misc/SVG";
 import StudentTable from "./StudentTable";
 
 async function filterWidgetLoader() {
@@ -111,11 +118,12 @@ function FilterWidget({
                     <option value="" defaultValue={true}>
                         Choose year
                     </option>
-                    {exchangeYear.map((y, i) => (
-                        <option value={y} key={i}>
-                            {y}
-                        </option>
-                    ))}
+                    {exchangeYear &&
+                        exchangeYear.map((y, i) => (
+                            <option value={y} key={i}>
+                                {y}
+                            </option>
+                        ))}
                 </select>
             </div>
             <div className="basis-3/5">
@@ -254,6 +262,8 @@ export default function Discover() {
     const formRef = useRef(null);
     const submit = useSubmit();
     const data = useActionData();
+    const loadData = useLoaderData();
+    const navigation = useNavigation();
     const [currentPage, setCurrentPage] = useState(1);
     /**
      * this filter state is used because we don't want the specific filter identifier [Year: 2023 x] to show up when we choose an option from the drop down
@@ -292,7 +302,12 @@ export default function Discover() {
     return (
         <div className={className + " relative p-16"}>
             <h1 className="font-extrabold text-2xl mb-7">Student List</h1>
-            <Form className="flex gap-5 mb-3" method="post" ref={formRef}>
+            <Form
+                className="flex gap-5 mb-3"
+                method="post"
+                ref={formRef}
+                preventScrollReset
+            >
                 <input
                     className="py-2 px-3 font-medium text-xs text-gray-600 rounded-md w-96 border-2 border-slate-200"
                     type="text"
@@ -302,7 +317,11 @@ export default function Discover() {
                 />
                 <div
                     className="bg-black flex px-3 justify-around items-center w-24 rounded-md hover:cursor-pointer [&_svg]:hover:fill-green-300 [&>p]:hover:text-green-300"
-                    onClick={() => submit(formRef.current)}
+                    onClick={() => {
+                        // disable functionality when student data are not available. indicated by empty exchangeYear i.e. []
+                        if (!loadData.filterWidgetData.exchangeYear) return;
+                        submit(formRef.current);
+                    }}
                 >
                     <SearchIcon
                         w={14}
@@ -314,7 +333,11 @@ export default function Discover() {
                 </div>
                 <div
                     className="bg-black flex px-3 justify-around items-center w-20 rounded-md hover:cursor-pointer [&_svg]:hover:fill-green-300 [&>p]:hover:text-green-300"
-                    onClick={handleAddFilter}
+                    onClick={() => {
+                        // disable functionality when student data are not available. indicated by empty exchangeYear i.e. []
+                        if (!loadData.filterWidgetData.exchangeYear) return;
+                        handleAddFilter();
+                    }}
                 >
                     <PlusIcon
                         w={14}
@@ -323,6 +346,9 @@ export default function Discover() {
                         onClick={() => {}}
                     />
                     <p className="text-white text-xs font-semibold">Filter</p>
+                </div>
+                <div className="flex items-center justify-center">
+                    {navigation.state === "loading" && <LoadingIcon />}
                 </div>
                 <FilterWidget
                     className={
@@ -369,11 +395,21 @@ export default function Discover() {
                     );
                 })}
             </div>
-            <StudentTable
-                data={data}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-            />
+            {/* if exchangeYear is empty i.e. [], it means we don't have any student data in db */}
+            {loadData.filterWidgetData.exchangeYear ? (
+                <StudentTable
+                    data={data}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                />
+            ) : (
+                <div className="h-[700px] flex items-center justify-center flex-col text-gray-300">
+                    <h1 className="text-4xl font-extrabold mb-14">
+                        Oops! Nothing to see yet
+                    </h1>
+                    <p className="text-9xl">¯\_(ツ)_/¯</p>
+                </div>
+            )}
         </div>
     );
 }
