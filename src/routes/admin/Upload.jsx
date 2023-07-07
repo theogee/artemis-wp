@@ -104,7 +104,7 @@ export default function Upload() {
             if (response.success) {
                 setAlert({
                     active: true,
-                    msg: "Student accounts has been registered.",
+                    msg: "Student accounts have been registered.",
                     level: "success",
                 });
                 return;
