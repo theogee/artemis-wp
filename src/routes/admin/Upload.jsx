@@ -36,8 +36,8 @@ export async function action({ request }) {
 
 function FileIndicator({
     file,
-    batchYear,
-    setBatchYear,
+    exchangeYear,
+    setExchangeYear,
     className: parentClass,
     isSubmitting,
 }) {
@@ -58,13 +58,13 @@ function FileIndicator({
                 </p>
             </div>
             <div className="flex items-center gap-4 basis-4/12 justify-end">
-                <p className="text-xs font-semibold">Batch year</p>
+                <p className="text-xs font-semibold">Exchange year</p>
                 <input
                     type="number"
-                    value={batchYear}
+                    value={exchangeYear}
                     className="text-xs text-gray-600 rounded-md border-2 py-1 font-semibold w-14 text-center"
-                    onChange={(e) => setBatchYear(e.target.value)}
-                    name="batchYear"
+                    onChange={(e) => setExchangeYear(e.target.value)}
+                    name="exchangeYear"
                 />
                 {isSubmitting && <LoadingIcon />}
             </div>
@@ -74,7 +74,7 @@ function FileIndicator({
 
 export default function Upload() {
     const [isDragOver, setIsDragOver] = useState(false);
-    const [batchYear, setBatchYear] = useState(new Date().getFullYear());
+    const [exchangeYear, setExchangeYear] = useState(new Date().getFullYear());
     const [file, setFile] = useState(null);
     const [alert, setAlert] = useState({
         active: false,
@@ -174,8 +174,8 @@ export default function Upload() {
                     <FileIndicator
                         className={file === null && "hidden"}
                         file={file}
-                        batchYear={batchYear}
-                        setBatchYear={setBatchYear}
+                        exchangeYear={exchangeYear}
+                        setExchangeYear={setExchangeYear}
                         isSubmitting={navigation.state === "submitting"}
                     />
                     <div
