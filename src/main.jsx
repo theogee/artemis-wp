@@ -6,7 +6,7 @@ import Discover, {
     action as discoverAction,
     loader as discoverLoader,
 } from "./routes/admin/Discover";
-import Upload from "./routes/admin/Upload";
+import Upload, { action as uploadAction } from "./routes/admin/Upload";
 import Dashboard, {
     loader as dashboardLoader,
 } from "./routes/common/Dashboard";
@@ -44,6 +44,7 @@ const router = createBrowserRouter([
             {
                 path: "upload",
                 element: <Upload />,
+                action: uploadAction,
             },
         ],
     },

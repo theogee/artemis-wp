@@ -8,23 +8,18 @@ export default function Alert({
 }) {
     const color =
         level === "error"
-            ? "text-red-400"
+            ? "#f87171"
             : level === "warning"
-            ? "text-yellow-400"
+            ? "#facc15"
             : level === "success"
-            ? "text-green-400"
-            : "text-white";
+            ? "#4ade80"
+            : "#ffffff";
     return (
         <div
-            className={`${color} ${parentClass} py-4 px-4 text-xs rounded-lg bg-black font-medium flex items-center min-w-[300px] justify-between`}
+            className={`${parentClass} py-4 px-4 text-xs rounded-lg bg-black font-medium flex items-center min-w-[300px] justify-between gap-5`}
         >
-            <p className={`${color}`}>{message}</p>
-            <CloseIcon
-                w="22"
-                h="22"
-                className={color.replace("text-", "fill-")}
-                onClick={onClick}
-            />
+            <p style={{ color: color }}>{message}</p>
+            <CloseIcon w="22" h="22" color={color} onClick={onClick} />
         </div>
     );
 }
