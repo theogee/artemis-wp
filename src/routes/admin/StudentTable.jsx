@@ -17,6 +17,7 @@ export default function StudentTable({ data, currentPage, setCurrentPage }) {
                     </thead>
                     <tbody className="w-full block ">
                         {data &&
+                            data.students &&
                             data.students.map((s, i) => (
                                 <tr
                                     key={i}
