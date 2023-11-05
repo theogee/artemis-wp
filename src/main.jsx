@@ -6,6 +6,9 @@ import Discover, {
     action as discoverAction,
     loader as discoverLoader,
 } from "./routes/admin/Discover";
+import StudentDetail, {
+    loader as studentDetailLoader,
+} from "./routes/admin/StudentDetail";
 import Upload, { action as uploadAction } from "./routes/admin/Upload";
 import Dashboard, {
     loader as dashboardLoader,
@@ -45,6 +48,11 @@ const router = createBrowserRouter([
                 path: "upload",
                 element: <Upload />,
                 action: uploadAction,
+            },
+            {
+                path: "students/:studentID",
+                element: <StudentDetail />,
+                loader: studentDetailLoader,
             },
         ],
     },
