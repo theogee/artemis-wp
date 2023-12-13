@@ -97,7 +97,7 @@ export default function StudentDetail() {
     const [activeTab, setActiveTab] = useState("GENERAL");
 
     return (
-        <div className="border-2 border-stone-300 rounded-md w-9/12 m-auto py-6">
+        <div className="border-2 border-stone-300 rounded-md w-9/12 m-auto py-6 min-h-[800px]">
             <div className="flex gap-8 px-6 pb-6">
                 <Avatar
                     givenName={student.givenName}
