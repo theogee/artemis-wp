@@ -320,6 +320,8 @@ export default function Discover() {
                     onClick={() => {
                         // disable functionality when student data are not available. indicated by empty exchangeYear i.e. []
                         if (!loadData.filterWidgetData.exchangeYear) return;
+                        // reset the current page for filtered data
+                        setCurrentPage(1);
                         submit(formRef.current);
                     }}
                 >
