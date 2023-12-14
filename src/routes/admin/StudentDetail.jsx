@@ -5,46 +5,38 @@ import General from "./StudentDetailTabs/General";
 import Internship from "./StudentDetailTabs/Internship";
 import Passport from "./StudentDetailTabs/Passport";
 
-export function loader({ params }) {
+export async function loader({ params }) {
     // TODO: fetch student from BE API
     // console.log(params.studentID);
-    return {
-        givenName: "Adisetya Elang",
-        surname: "Segara",
-        gender: "M",
-        sguMajor: "Mechatronics",
-        // TODO: update BE to add major initial
-        sguMajorInitial: "MT",
-        fhDepartment: "Wirtschaftsingenieurwesen",
-        studentID: 30364718,
-        dateOfBirth: "2002-08-12T00:00:00Z",
-        cityOfBirth: "Mataram",
-        passportNumber: "X1344702",
-        dateOfIssue: "2022-03-28T00:00:00Z",
-        dateOfExpiry: "2027-03-28T00:00:00Z",
-        issuingOffice: "Tangerang",
-        privateEmail: "elangsegara02@gmail.com",
-        sguEmail: "adisetya.segara@student.sgu.ac.id",
-        username: "adseg001",
-        fhEmail: "segara.adisetyaelang@fh-swf.de",
-        iban: "DE44 4145 0075 0100 6881 18",
-        mobilePhone: "081311048967",
-        mobilePhoneDE: "015733876124",
-        currentAddress: "",
-        currentPostcode: "",
-        currentCity: "",
-        coName: "",
-        internshipCompany: "",
-        internshipStartDate: "",
-        internshipEndDate: "",
-        internshipCompanyAddress: "",
-        internshipCompanyPostcode: "",
-        internshipCompanyCity: "",
-        internshipSupervisorName: "",
-        internshipSupervisorEmail: "",
-        internshipSupervisorPhone: "",
-        exchangeYear: 2023,
-    };
+    const endpoint = "/api/students/" + params.studentID;
+
+    const response = await fetch(endpoint, {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (response.status === 401) throw new Error(401);
+
+    const data = await response.json();
+
+    if (!data.success) {
+        if (data.servError) {
+            if (data.servError.length !== 0) {
+                const errorMsg = data.servError.join(", ");
+                console.log(`internal server error: ${errorMsg}`);
+                throw new Error(errorMsg);
+            }
+        }
+
+        // bad request error
+        if (data.data) {
+            const errorMsg = data.data.errMessage.join(", ");
+            console.log(`bad request: ${errorMsg}`);
+            throw new Error(errorMsg);
+        }
+    }
+
+    return data.data.studentData;
 }
 
 function Avatar({ givenName, surname }) {

@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { ArrowIcon } from "../common/misc/SVG";
 
 export default function StudentTable({ data, currentPage, setCurrentPage }) {
+    const navigate = useNavigate();
+
     return (
         <div className="relative">
             <div className="h-[700px] overflow-y-auto-scroll overflow-x-hidden">
@@ -24,6 +27,11 @@ export default function StudentTable({ data, currentPage, setCurrentPage }) {
                                     className={
                                         "text-xs [&>*]:font-normal [&>td]:w-1/6 text-slate-500 w-full text-left border-b-2 border-slate-200 py-4 block [&>td]:inline-block hover:bg-blue-50 hover:cursor-pointer " +
                                         (i % 2 === 0 && "bg-slate-50/50")
+                                    }
+                                    onClick={() =>
+                                        navigate(
+                                            `/dashboard/students/${s.studentID}`
+                                        )
                                     }
                                 >
                                     <td>{s.studentID}</td>
