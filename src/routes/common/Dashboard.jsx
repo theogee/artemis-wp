@@ -49,6 +49,6 @@ export default function Dashboard() {
     return data.data.userType === "admin" ? (
         <AdminDashboard />
     ) : (
-        <div>Welcome To User Dashboard</div>
+        <div>Welcome To Student Dashboard</div>
     );
 }

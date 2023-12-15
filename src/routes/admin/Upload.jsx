@@ -8,6 +8,12 @@ import {
 import { getFileSize } from "../../pkg/utils/common";
 import Alert from "../common/misc/Alert";
 import { CloudIcon, CsvFileIcon, LoadingIcon } from "../common/misc/SVG";
+import authorizer from "../common/utils/authorizer";
+
+export async function loader(allowedRole) {
+    await authorizer(allowedRole);
+    return null;
+}
 
 export async function action({ request }) {
     try {

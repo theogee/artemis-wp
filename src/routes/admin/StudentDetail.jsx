@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import authorizer from "../common/utils/authorizer";
 import Accommodation from "./StudentDetailTabs/Accommodation";
 import General from "./StudentDetailTabs/General";
 import Internship from "./StudentDetailTabs/Internship";
 import Passport from "./StudentDetailTabs/Passport";
 
-export async function loader({ params }) {
+export async function loader({ params, allowedRole }) {
+    await authorizer(allowedRole);
     // TODO: fetch student from BE API
     // console.log(params.studentID);
     const endpoint = "/api/students/" + params.studentID;

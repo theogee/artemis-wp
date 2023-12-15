@@ -15,6 +15,7 @@ import {
     PlusIcon,
     SearchIcon,
 } from "../common/misc/SVG";
+import authorizer from "../common/utils/authorizer";
 import StudentTable from "./StudentTable";
 
 async function filterWidgetLoader() {
@@ -71,7 +72,9 @@ async function filterWidgetLoader() {
     };
 }
 
-export async function loader() {
+export async function loader(allowedRole) {
+    await authorizer(allowedRole);
+
     const filterWidgetData = await filterWidgetLoader();
     return {
         filterWidgetData,

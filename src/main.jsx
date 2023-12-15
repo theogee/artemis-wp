@@ -9,7 +9,10 @@ import Discover, {
 import StudentDetail, {
     loader as studentDetailLoader,
 } from "./routes/admin/StudentDetail";
-import Upload, { action as uploadAction } from "./routes/admin/Upload";
+import Upload, {
+    action as uploadAction,
+    loader as uploadLoader,
+} from "./routes/admin/Upload";
 import Dashboard, {
     loader as dashboardLoader,
 } from "./routes/common/Dashboard";
@@ -31,8 +34,7 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
     },
     {
-        // call GetMeta for every routes to pre check if user is authorized to access a specific page
-        // add backend middleware to authorize access based on usertype
+        // every route that needs to be authorized, must have a loader which will invoke authorizer("role")
         path: "/dashboard",
         element: <Dashboard />,
         loader: dashboardLoader,
@@ -41,18 +43,20 @@ const router = createBrowserRouter([
             {
                 path: "discover",
                 element: <Discover />,
-                loader: discoverLoader,
+                loader: async () => discoverLoader("admin"),
                 action: discoverAction,
             },
             {
                 path: "upload",
                 element: <Upload />,
                 action: uploadAction,
+                loader: async () => uploadLoader("admin"),
             },
             {
                 path: "students/:studentID",
                 element: <StudentDetail />,
-                loader: studentDetailLoader,
+                loader: async ({ params }) =>
+                    studentDetailLoader({ params, allowedRole: "admin" }),
             },
         ],
     },
