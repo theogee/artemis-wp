@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { NavLink, Outlet, useActionData } from "react-router-dom";
+import {
+    NavLink,
+    Outlet,
+    useActionData,
+    useLocation,
+    useNavigate,
+} from "react-router-dom";
 import Alert from "../common/misc/Alert";
 import { LogoutIcon, SearchIcon, UploadIcon } from "../common/misc/SVG";
 
@@ -98,6 +104,15 @@ function Navigation({ className: parentClass }) {
 }
 
 export default function Dashboard() {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.pathname === "/dashboard") {
+            navigate("/dashboard/discover", { replace: true });
+        }
+    }, [navigate, location.pathname]);
+
     return (
         <div className="flex h-screen">
             <Navigation className="w-1/12 flex flex-col items-center justify-center gap-10" />
