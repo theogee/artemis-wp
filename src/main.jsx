@@ -17,14 +17,17 @@ import Dashboard, {
     loader as dashboardLoader,
 } from "./routes/common/Dashboard";
 import ErrorPage from "./routes/common/ErrorPage";
+import LandingPage from "./routes/common/LandingPage";
 import Login, { action as loginAction } from "./routes/common/Login";
+import {
+    default as StudentDetailEditable,
+    loader as studentDetailEditableLoader,
+} from "./routes/student/StudentDetail";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: (
-            <div className="font-sans">Hello from Artemis Web Platform!</div>
-        ),
+        element: <LandingPage />,
         errorElement: <ErrorPage />,
     },
     {
@@ -57,6 +60,11 @@ const router = createBrowserRouter([
                 element: <StudentDetail />,
                 loader: async ({ params }) =>
                     studentDetailLoader({ params, allowedRole: "admin" }),
+            },
+            {
+                path: "detail",
+                element: <StudentDetailEditable />,
+                loader: async () => studentDetailEditableLoader("student"),
             },
         ],
     },

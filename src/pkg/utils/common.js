@@ -9,6 +9,10 @@ export const getFileSize = (number) => {
 };
 
 export const formatDate = (str) => {
+    const datePickerPattern = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
+
+    if (datePickerPattern.test(str)) return str;
+
     if (str === "") return "";
 
     const date = new Date(str);
@@ -16,5 +20,5 @@ export const formatDate = (str) => {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
 
-    return `${day}.${month}.${year}`;
+    return `${year}-${month}-${day}`;
 };

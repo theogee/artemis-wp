@@ -1,5 +1,6 @@
 import { redirect, useLoaderData } from "react-router-dom";
 import { default as AdminDashboard } from "../admin/Dashboard";
+import { default as StudentDashboard } from "../student/Dashboard";
 
 export async function loader() {
     /**
@@ -49,6 +50,6 @@ export default function Dashboard() {
     return data.data.userType === "admin" ? (
         <AdminDashboard />
     ) : (
-        <div>Welcome To Student Dashboard</div>
+        <StudentDashboard />
     );
 }

@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import authorizer from "../common/utils/authorizer";
 import Accommodation from "./StudentDetailTabs/Accommodation";
 import General from "./StudentDetailTabs/General";
 import Internship from "./StudentDetailTabs/Internship";
 import Passport from "./StudentDetailTabs/Passport";
 
-export async function loader({ params, allowedRole }) {
+export async function loader(allowedRole) {
     await authorizer(allowedRole);
     // TODO: fetch student from BE API
     // console.log(params.studentID);
-    const endpoint = "/api/students/" + params.studentID;
+    const endpoint = "/api/students/0";
 
     const response = await fetch(endpoint, {
         method: "GET",
@@ -66,17 +66,94 @@ function Avatar({ givenName, surname }) {
     );
 }
 
+function EditButton({ isEditing, onClick }) {
+    return (
+        <div
+            className={
+                (isEditing
+                    ? "bg-gray-400"
+                    : "bg-blue-800 hover:cursor-pointer") +
+                " flex px-3 justify-around items-center min-w-[60px] h-9 rounded-md"
+            }
+            onClick={onClick}
+        >
+            <p
+                className={
+                    (isEditing ? "text-gray-900" : "text-white") +
+                    " text-xs font-semibold"
+                }
+            >
+                Edit
+            </p>
+        </div>
+    );
+}
+
+function CancelButton({ isEditing, onClick }) {
+    const activeStyle =
+        "bg-red-600 flex px-3 justify-around items-center min-w-[60px] h-9 rounded-md hover:cursor-pointer";
+    const disabledStyle = "bg-gray-400";
+
+    return (
+        <button
+            className={
+                (isEditing
+                    ? "bg-red-600 hover:cursor-pointer"
+                    : "bg-gray-400") +
+                " flex px-3 justify-around items-center min-w-[60px] h-9 rounded-md"
+            }
+            onClick={onClick}
+            disabled={!isEditing}
+        >
+            <p
+                className={
+                    (isEditing ? "text-white" : "text-gray-900") +
+                    " text-xs font-semibold"
+                }
+            >
+                Cancel
+            </p>
+        </button>
+    );
+}
+
+function SaveButton({ onClick }) {
+    return (
+        <div
+            className="bg-green-600 flex px-3 justify-around items-center min-w-[60px] h-9 rounded-md hover:cursor-pointer"
+            onClick={onClick}
+        >
+            <p className="text-white text-xs font-semibold">Save</p>
+        </div>
+    );
+}
+
 export default function StudentDetail() {
-    const student = useLoaderData();
+    const navigate = useNavigate();
+    const [isEditing, setIsEditing] = useState(false);
+    const [student, setStudent] = useState(useLoaderData());
+    const oldStudent = useLoaderData();
 
     const tabs = {
         GENERAL: {
             label: "General",
-            component: <General student={student} />,
+            component: (
+                <General
+                    student={student}
+                    setStudent={setStudent}
+                    isEditing={isEditing}
+                />
+            ),
         },
         ACCOMMODATION: {
             label: "Accommodation",
-            component: <Accommodation student={student} />,
+            component: (
+                <Accommodation
+                    student={student}
+                    setStudent={setStudent}
+                    isEditing={isEditing}
+                />
+            ),
         },
         PASSPORT: {
             label: "Passport",
@@ -84,7 +161,13 @@ export default function StudentDetail() {
         },
         INTERNSHIP: {
             label: "Internship",
-            component: <Internship student={student} />,
+            component: (
+                <Internship
+                    student={student}
+                    setStudent={setStudent}
+                    isEditing={isEditing}
+                />
+            ),
         },
     };
 
@@ -104,6 +187,21 @@ export default function StudentDetail() {
                     <p className="text-sm font-medium">
                         {student.sguMajorInitial} • {student.fhDepartment}
                     </p>
+                </div>
+                <div className="ml-auto flex gap-5">
+                    <CancelButton
+                        isEditing={isEditing}
+                        onClick={() => {
+                            // TODO: reload view
+                            setStudent(oldStudent);
+                            setIsEditing(false);
+                        }}
+                    />
+                    <EditButton
+                        isEditing={isEditing}
+                        onClick={() => setIsEditing(true)}
+                    />
+                    <SaveButton onClick={() => console.log(student)} />
                 </div>
             </div>
             <nav className="border-b-2 border-stone-300 px-6 font-bold gap-8 flex pb-3">
