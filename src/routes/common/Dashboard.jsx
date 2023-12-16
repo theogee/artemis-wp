@@ -44,7 +44,7 @@ export default function Dashboard() {
     const data = useLoaderData();
 
     if (data.fetchError) {
-        return <div>Unhandled GetMeta error</div>;
+        throw new Error("500 Server Error");
     }
 
     return data.data.userType === "admin" ? (

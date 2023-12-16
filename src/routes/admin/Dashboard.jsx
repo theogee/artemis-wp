@@ -1,8 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, Outlet, useActionData } from "react-router-dom";
-import { SearchIcon, UploadIcon } from "../common/misc/SVG";
+import Alert from "../common/misc/Alert";
+import { LogoutIcon, SearchIcon, UploadIcon } from "../common/misc/SVG";
 
 function Navigation({ className: parentClass }) {
+    const [alert, setAlert] = useState({
+        active: false,
+        msg: "",
+    });
+
+    const logout = async () => {
+        const endpoint = "/api/logout";
+
+        const response = await fetch(endpoint, {
+            method: "POST",
+            credentials: "include",
+        });
+
+        if (response.status !== 200) {
+            setAlert({
+                active: true,
+                msg: "Internal server error has occured. Please try again later.",
+                level: "error",
+            });
+        }
+    };
+
     const buttons = [
         {
             to: "discover",
@@ -25,6 +48,18 @@ function Navigation({ className: parentClass }) {
                     h={25}
                     className="fill-black"
                     onClick={() => {}}
+                />
+            ),
+        },
+        {
+            to: "/",
+            text: "Logout",
+            element: (
+                <LogoutIcon
+                    w={25}
+                    h={25}
+                    className="fill-black"
+                    onClick={logout}
                 />
             ),
         },
@@ -67,6 +102,15 @@ export default function Dashboard() {
         <div className="flex h-screen">
             <Navigation className="w-1/12 flex flex-col items-center justify-center gap-10" />
             <Outlet context={{ className: "w-11/12" }} />
+            <Alert
+                className={
+                    `absolute bottom-10 transition-all duration-500 ` +
+                    (alert.active ? "left-10" : "-left-full")
+                }
+                level={alert.level}
+                message={alert.msg}
+                onClick={() => setAlert({ active: false, msg: "" })}
+            />
         </div>
     );
 }
