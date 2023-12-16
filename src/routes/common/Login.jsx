@@ -2,6 +2,20 @@ import { useEffect, useState } from "react";
 import { Form, redirect, useActionData } from "react-router-dom";
 import Alert from "./misc/Alert";
 
+export async function loader() {
+    const endpoint = "/api/meta";
+    const response = await fetch(endpoint, {
+        method: "POST",
+        credentials: "include",
+    });
+
+    if (response.status === 200) {
+        return redirect("/dashboard");
+    }
+
+    return null;
+}
+
 export async function action({ request }) {
     try {
         const formData = await request.formData();

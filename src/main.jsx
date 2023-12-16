@@ -18,7 +18,10 @@ import Dashboard, {
 } from "./routes/common/Dashboard";
 import ErrorPage from "./routes/common/ErrorPage";
 import LandingPage from "./routes/common/LandingPage";
-import Login, { action as loginAction } from "./routes/common/Login";
+import Login, {
+    action as loginAction,
+    loader as loginLoader,
+} from "./routes/common/Login";
 import {
     default as StudentDetailEditable,
     loader as studentDetailEditableLoader,
@@ -34,6 +37,7 @@ const router = createBrowserRouter([
         path: "/login",
         element: <Login />,
         action: loginAction,
+        loader: loginLoader,
         errorElement: <ErrorPage />,
     },
     {
