@@ -4,7 +4,7 @@ export default function DesktopRestriction() {
             <h1 className="text-4xl font-extrabold mb-14">
                 Please access this site from your desktop.
             </h1>
-            <p className="text-9xl">( ͡° ͜ʖ ͡°)</p>
+            <p className="text-7xl">( ͡° ͜ʖ ͡°)</p>
         </div>
     );
 }
