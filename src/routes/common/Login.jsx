@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Form, redirect, useActionData } from "react-router-dom";
+import Copyright from "./Copyright";
 import DesktopRestriction from "./DesktopRestriction";
 import Alert from "./misc/Alert";
 
@@ -180,6 +181,7 @@ export default function Login() {
                 message={alert.msg}
                 onClick={() => setAlert({ active: false, msg: "" })}
             />
+            <Copyright />
         </div>
     );
 }

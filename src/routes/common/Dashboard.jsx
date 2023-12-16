@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { redirect, useLoaderData } from "react-router-dom";
 import { default as AdminDashboard } from "../admin/Dashboard";
 import { default as StudentDashboard } from "../student/Dashboard";
+import Copyright from "./Copyright";
 import DesktopRestriction from "./DesktopRestriction";
 
 export async function loader() {
@@ -63,9 +64,14 @@ export default function Dashboard() {
         return <DesktopRestriction />;
     }
 
-    return data.data.userType === "admin" ? (
-        <AdminDashboard />
-    ) : (
-        <StudentDashboard />
+    return (
+        <>
+            {data.data.userType === "admin" ? (
+                <AdminDashboard />
+            ) : (
+                <StudentDashboard />
+            )}
+            <Copyright />
+        </>
     );
 }

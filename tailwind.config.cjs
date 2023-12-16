@@ -19,6 +19,7 @@ module.exports = {
                 "Segoe UI Symbol",
                 "Noto Color Emoji",
             ],
+            jetbrains: ["JetBrains Mono", "sans-serif"],
         },
         extend: {},
     },
