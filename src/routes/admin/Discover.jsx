@@ -408,7 +408,7 @@ export default function Discover() {
                     setCurrentPage={setCurrentPage}
                 />
             ) : (
-                <div className="h-[700px] flex items-center justify-center flex-col text-gray-300">
+                <div className="h-[700px] flex items-center justify-center flex-col text-gray-300 text-center">
                     <h1 className="text-4xl font-extrabold mb-14">
                         Oops! Nothing to see yet
                     </h1>

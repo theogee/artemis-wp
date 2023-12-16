@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Form, redirect, useActionData } from "react-router-dom";
+import DesktopRestriction from "./DesktopRestriction";
 import Alert from "./misc/Alert";
 
 export async function loader() {
@@ -67,6 +68,17 @@ export default function Login() {
     const [passwordError, setPasswordError] = useState("");
     const [alert, setAlert] = useState({ active: false, msg: "" });
 
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1600);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsDesktop(window.innerWidth >= 1600);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     useEffect(() => {
         if (data) {
             if (data.servError) {
@@ -97,6 +109,10 @@ export default function Login() {
     const handleChangePassword = () => {
         if (passwordError) setPasswordError("");
     };
+
+    if (!isDesktop) {
+        return <DesktopRestriction />;
+    }
 
     return (
         <div className="flex overflow-hidden relative">
