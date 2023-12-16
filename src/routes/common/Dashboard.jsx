@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { redirect, useLoaderData } from "react-router-dom";
 import { default as AdminDashboard } from "../admin/Dashboard";
 import { default as StudentDashboard } from "../student/Dashboard";
+import DesktopRestriction from "./DesktopRestriction";
 
 export async function loader() {
     /**
@@ -42,9 +44,23 @@ export async function loader() {
 
 export default function Dashboard() {
     const data = useLoaderData();
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1600);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsDesktop(window.innerWidth >= 1600);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     if (data.fetchError) {
         throw new Error("500 Server Error");
+    }
+
+    if (!isDesktop) {
+        return <DesktopRestriction />;
     }
 
     return data.data.userType === "admin" ? (
