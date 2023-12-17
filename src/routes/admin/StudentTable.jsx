@@ -66,7 +66,7 @@ export default function StudentTable({ data, currentPage, setCurrentPage }) {
                         </div>
                         <p className="font-bold text-xs">
                             {data.students === null
-                                ? "1"
+                                ? "1 of 1"
                                 : `${currentPage} of ${Math.ceil(
                                       data.totalStudent / 20
                                   )}`}
