@@ -48,7 +48,7 @@ export default function StudentTable({ data, currentPage, setCurrentPage }) {
             {data && (
                 <div className="absolute right-0 -top-20 flex items-center gap-10">
                     <div className="px-3 py-2 rounded-md bg-slate-100 text-xs font-extrabold text-slate-400">
-                        <p>count: {data.totalStudent}</p>
+                        <p>count: {data.totalStudent || "0"}</p>
                     </div>
                     <div className="flex items-center gap-3">
                         <div
@@ -65,7 +65,11 @@ export default function StudentTable({ data, currentPage, setCurrentPage }) {
                             />
                         </div>
                         <p className="font-bold text-xs">
-                            {currentPage} of {Math.ceil(data.totalStudent / 20)}
+                            {data.students === null
+                                ? "1"
+                                : `${currentPage} of ${Math.ceil(
+                                      data.totalStudent / 20
+                                  )}`}
                         </p>
                         <div
                             className="px-3 border-2 rounded-md bg-white rotate-180 flex items-center py-2 hover:cursor-pointer"
