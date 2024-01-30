@@ -17,7 +17,7 @@ const authorizer = async (allowedRole) => {
         const role = data.data.userType;
 
         if (role === allowedRole) return;
-        else throw new Error("403 Forbidden");
+        else redirect("/login");
     } catch (e) {
         console.log(`unexpected error: ${e}`);
         throw new Error(e);
