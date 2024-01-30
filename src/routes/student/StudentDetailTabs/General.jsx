@@ -78,9 +78,48 @@ export default function General({ student, setStudent, isEditing }) {
                     }));
                 }}
             />
-            <StandardField label="SGU Email" value={student.sguEmail} />
-            <StandardField label="FH-SWF Email" value={student.fhEmail} />
-            <StandardField label="IBAN" value={student.iban} />
+            <InputField
+                label="SGU Email"
+                value={student.sguEmail}
+                name="sguEmail"
+                type="text"
+                disabled={!isEditing}
+                size={25}
+                onChange={(e) => {
+                    setStudent((prevStudent) => ({
+                        ...prevStudent,
+                        sguEmail: e.target.value,
+                    }));
+                }}
+            />
+            <InputField
+                label="FH-SWF Email"
+                value={student.fhEmail}
+                name="fhEmail"
+                type="text"
+                disabled={!isEditing}
+                size={25}
+                onChange={(e) => {
+                    setStudent((prevStudent) => ({
+                        ...prevStudent,
+                        fhEmail: e.target.value,
+                    }));
+                }}
+            />
+            <InputField
+                label="IBAN"
+                value={student.iban}
+                name="iban"
+                type="text"
+                disabled={!isEditing}
+                size={25}
+                onChange={(e) => {
+                    setStudent((prevStudent) => ({
+                        ...prevStudent,
+                        iban: e.target.value,
+                    }));
+                }}
+            />
             <StandardField label="Exchange Year" value={student.exchangeYear} />
         </div>
     );

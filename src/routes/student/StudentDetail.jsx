@@ -198,7 +198,19 @@ export default function StudentDetail() {
             internshipSupervisorName: student.internshipSupervisorName,
             internshipSupervisorEmail: student.internshipSupervisorEmail,
             internshipSupervisorPhone: student.internshipSupervisorPhone,
+            sguEmail: student.sguEmail,
+            fhEmail: student.fhEmail,
+            iban: student.iban,
         };
+
+        for (let key in updateData) {
+            if (
+                updateData.hasOwnProperty(key) &&
+                typeof updateData[key] == "string"
+            ) {
+                updateData[key] = updateData[key].trim();
+            }
+        }
 
         const formData = new FormData();
         Object.entries(updateData).forEach(([key, value]) => {
